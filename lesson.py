@@ -1,30 +1,73 @@
+from os import remove
+
+
 def read_file(file_name):
-    words = []
+    ###
+    # This help read file supplied from file system
+    ###
+    sentences = []
     with open(file_name) as f:
-        line = f.readline()
-        while line:
-            line = words.append(int(line))
-            line = f.readline()
+        line = f.read()
+        sentences = line.splitlines()
+        sentences = [s for s in sentences if s.strip()]
         f.close()
+    return sentences
+
+
+def convert_to_words(arg):
+    ###
+    # This function convert sentence into chucks of tokens i.e words
+    ###
+    sentence = " ".join(arg)
+    words = sentence.split(" ")
     return words
 
 
-words = read_file(file_name="Just.txt")
-print(words)
+def remove_punctuation(arg):
+    ###
+    # This remove .,: signs
+    ###
+    cleared_words = ""
+    for word in arg:
+        #print("length: {}, and word: {}".format(len(word), word))
+        count = len(word)
+        for letter in word:
+            count -= 1
+            # print(count)
+            if letter not in [".", ",", ":"]:
+                cleared_words += letter
+            if count == 0:
+                cleared_words += " "
+    return cleared_words.split(" ")
 
-# def unique_word():
-#     return set(words)
+
+# assign value to variable
+sentences = read_file(file_name="Just.txt")
+words = convert_to_words(sentences)
+words = remove_punctuation(words)
 
 
-# def word_freq():
-#     set_A = unique_word()
-#     return [(i, words.count(i)) for i in set_A]
+def unique_word(arg):
+    ###
+    # This return set of words
+    ###
+    return set(arg)
 
 
-# def output():
-#     print("Total word is {}".format(len(words)))
-#     print("Word Ferquency: {}".format(word_freq()))
+def word_freq():
+    ###
+    # compute frequency of each word
+    ###
+    set_A = unique_word(words)
+    return [(i, words.count(i)) for i in set_A if i != ""]
 
 
-# # Calling the function
-# output()
+def output():
+    ###
+    # Format the output of this program
+    ###
+    print("Total word is {}\nWord Frequency: {}".format(len(words), word_freq()))
+
+
+    # Calling the function
+output()
